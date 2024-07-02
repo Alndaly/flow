@@ -1,54 +1,62 @@
 import BaseEdge from './edges/Base';
-import { nanoid } from 'nanoid';
 import { useShallow } from 'zustand/react/shallow';
-import useWorkflowStore, { Actions, WorkflowState } from '@/store/workflow';
+import useWorkflowStore, {
+	Actions,
+	Node,
+	WorkflowState,
+} from '@/store/workflow';
 import ReactFlow, { NodeTypes, Controls, Background } from 'reactflow';
 import '../styles/reactflow.scss';
-import SampleNode from './nodes/Sample';
+import AddNode from './nodes/AddNode';
+import NumberPreviewNode from './nodes/NumberPreviewNode';
 import BottomPanel from './BottomPanel';
 import { useReactFlow } from 'reactflow';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const edgeTypes = {
 	base: BaseEdge,
 };
 
 const nodeTypes: NodeTypes = {
-	sample: SampleNode,
+	addNode: AddNode,
+	numberPreviewNode: NumberPreviewNode,
 };
-
-const selector = (state: WorkflowState & Actions) => ({
-	nodes: state.nodes,
-	edges: state.edges,
-	setNodes: state.setNodes,
-	onNodesChange: state.onNodesChange,
-	onEdgesChange: state.onEdgesChange,
-	onConnect: state.onConnect,
-});
 
 export default function Flow() {
 	const reactFlow = useReactFlow();
 	const graphWrapper = useRef(null);
-	const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
-		useWorkflowStore(useShallow(selector));
+	const {
+		nodes,
+		edges,
+		onConnect,
+		onNodesChange,
+		onEdgesChange,
+		setNode,
+		setNodes,
+	} = useWorkflowStore();
+
+	// useEffect(() => {
+	// 	console.log('nodes update', nodes);
+	// }, [nodes]);
 
 	const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		// 获取节点类型ID
-		// const id = event.dataTransfer.getData('application/reactflow');
+		const type = event.dataTransfer.getData('application/reactflow');
 		// 使用 project 将像素坐标转换为内部 ReactFlow 坐标系
 		const position = reactFlow.screenToFlowPosition({
 			x: event.clientX,
 			y: event.clientY,
 		});
-		const newNode = {
-			id: nanoid(),
-			type: 'sample',
-			position,
-			data: {},
-		};
-		nodes.push(newNode);
-		reactFlow.setNodes(nodes);
+		const newNode = new Node(type);
+		setNodes([...nodes, newNode]);
+		setNode(newNode.id, {
+			...newNode,
+			position: {
+				x: position.x,
+				y: position.y,
+			},
+		});
 	};
 
 	const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -57,23 +65,25 @@ export default function Flow() {
 	};
 
 	return (
-		<ReactFlow
-			ref={graphWrapper}
-			nodes={nodes}
-			panOnScroll={true}
-			zoomOnScroll={false}
-			zoomOnDoubleClick={false}
-			edges={edges}
-			onNodesChange={onNodesChange}
-			onEdgesChange={onEdgesChange}
-			onConnect={onConnect}
-			edgeTypes={edgeTypes}
-			onDrop={(e) => onDrop(e)}
-			onDragOver={(e) => onDragOver(e)}
-			nodeTypes={nodeTypes}>
-			<Background />
-			<Controls />
-			<BottomPanel />
-		</ReactFlow>
+		<>
+			<ReactFlow
+				ref={graphWrapper}
+				nodes={nodes}
+				panOnScroll={true}
+				zoomOnScroll={false}
+				zoomOnDoubleClick={false}
+				edges={edges}
+				onNodesChange={onNodesChange}
+				onEdgesChange={onEdgesChange}
+				onConnect={onConnect}
+				edgeTypes={edgeTypes}
+				onDrop={(e) => onDrop(e)}
+				onDragOver={(e) => onDragOver(e)}
+				nodeTypes={nodeTypes}>
+				<Background />
+				<Controls />
+				<BottomPanel />
+			</ReactFlow>
+		</>
 	);
 }

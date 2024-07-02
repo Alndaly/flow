@@ -6,7 +6,6 @@ import { Handle, Position } from 'reactflow';
 type TextDataProps = {
 	label: string;
 	id: string;
-	description: string;
 	value: string;
 	io: string;
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
