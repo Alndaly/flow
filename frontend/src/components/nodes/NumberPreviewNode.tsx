@@ -3,14 +3,12 @@ import { useEffect } from 'react';
 import TextData from '../nodeData/Text';
 import useWorkflowStore, { NodeOperation } from '@/store/workflow';
 
-const numberPreviewOperation: NodeOperation = async (inputs) => {
+const numberPreviewOperation: NodeOperation = async () => {
 	return [];
 };
 
 export default function NumberPreviewNode(props: NodeProps) {
 	const { getNodeById, setNode } = useWorkflowStore();
-
-	const handleTextDataChange = () => {};
 
 	useEffect(() => {
 		const node = getNodeById(props.id);
@@ -27,14 +25,16 @@ export default function NumberPreviewNode(props: NodeProps) {
 
 	return (
 		<>
-			<div className='font-bold pb-2'>Number Preview Node</div>
+			<div className='pb-2'>
+				<div className='font-bold'>Number Preview Node</div>
+				<div className='text-sm'>{getNodeById(props.id)?.id}</div>
+			</div>
 			<div className='rounded-lg shadow p-3 bg-white dark:bg-black/20 backdrop-blur-lg'>
 				<div className='divide-y'>
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.inputs.map((input, index) => (
 							<div className='relative p-3' key={index}>
 								<TextData
-									onChange={handleTextDataChange}
 									io='input'
 									id={input.label}
 									label={input.label}
@@ -45,10 +45,9 @@ export default function NumberPreviewNode(props: NodeProps) {
 					</div>
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.outputs &&
-							getNodeById(props.id)?.data.outputs.map((output, index) => (
+							getNodeById(props.id)!.data.outputs!.map((output, index) => (
 								<div className='relative p-3' key={index}>
 									<TextData
-										onChange={handleTextDataChange}
 										io='output'
 										id={output.label}
 										label={output.label}

@@ -11,21 +11,36 @@ const addOperation: NodeOperation = async (inputs) => {
 
 export default function SampleNode(props: NodeProps) {
 	const { getNodeById, setNode } = useWorkflowStore();
-	const handleTextDataChange = (value, id) => {
+	const handleTextDataChange = (io: string, id: string, value: any) => {
 		const node = getNodeById(props.id);
 		if (!node) return;
-		setNode(node.id, {
-			...node,
-			data: {
-				...node.data,
-				inputs: node.data.inputs.map((input) => {
-					if (input.label === id) {
-						return { ...input, data: value };
-					}
-					return input;
-				}),
-			},
-		});
+		if (io === 'input') {
+			setNode(node.id, {
+				...node,
+				data: {
+					...node.data,
+					inputs: node.data.inputs.map((input) => {
+						if (input.label === id) {
+							return { ...input, data: value };
+						}
+						return input;
+					}),
+				},
+			});
+		} else if (io === 'output') {
+			setNode(node.id, {
+				...node,
+				data: {
+					...node.data,
+					outputs: node.data!.outputs!.map((output) => {
+						if (output.label === id) {
+							return { ...output, data: value };
+						}
+						return output;
+					}),
+				},
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -46,7 +61,10 @@ export default function SampleNode(props: NodeProps) {
 
 	return (
 		<>
-			<div className='font-bold pb-2'>Add Node</div>
+			<div className='pb-2'>
+				<div className='font-bold'>Add Node</div>
+				<div className='text-sm'>{getNodeById(props.id)?.id}</div>
+			</div>
 			<div className='rounded-lg shadow p-3 bg-white dark:bg-black/20 backdrop-blur-lg'>
 				<div className='divide-y'>
 					<div className='divide-y'>
@@ -64,7 +82,7 @@ export default function SampleNode(props: NodeProps) {
 					</div>
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.outputs &&
-							getNodeById(props.id)?.data.outputs.map((output, index) => (
+							getNodeById(props.id)!.data.outputs!.map((output, index) => (
 								<div className='relative p-3' key={index}>
 									<TextData
 										onChange={handleTextDataChange}

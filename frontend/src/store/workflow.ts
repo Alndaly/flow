@@ -11,6 +11,7 @@ import {
   OnEdgesChange,
   applyNodeChanges,
   applyEdgeChanges,
+  XYPosition,
 } from 'reactflow';
 
 export interface DataItem {
@@ -23,12 +24,14 @@ export type NodeOperation = (inputs: DataItem[]) => Promise<DataItem[]>;
 
 export class Edge {
   id: string;
+  type: string;
   source: string;
   target: string;
   sourceHandle?: string | null;
   targetHandle?: string | null;
 
-  constructor(source: string, target: string, sourceHandle?: string, targetHandle?: string) {
+  constructor(type: string, source: string, target: string, sourceHandle?: string, targetHandle?: string) {
+    this.type = type;
     this.id = uuidv4();
     this.source = source;
     this.target = target;
@@ -42,7 +45,7 @@ export class Edge {
 }
 
 export class Node {
-  position?: { x: number, y: number } = { x: 0, y: 0 };
+  position: XYPosition = { x: 0, y: 0 };
   type?: string;
   id: string;
   data: {
@@ -51,9 +54,10 @@ export class Node {
   } = { inputs: [] }
   operation?: NodeOperation;
 
-  constructor(type: string) {
+  constructor(type: string, position: XYPosition) {
     this.id = uuidv4();
-    this.type = type
+    this.type = type;
+    this.position = position
   }
 }
 
@@ -87,13 +91,14 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
     });
   },
   onConnect: (connection: Connection) => {
-    const newEdge = new Edge(connection.source!, connection.target!, connection?.sourceHandle, connection?.targetHandle)
+    // @ts-ignore
+    const newEdge = new Edge('mainEdge', connection.source!, connection.target!, connection?.sourceHandle, connection?.targetHandle)
     set({
       edges: addEdge(newEdge, get().edges),
     });
   },
   setNodes: (nodes: Node[]) => {
-    set(produce((state: WorkflowState) => ({ nodes: nodes })));
+    set({ nodes });
   },
   setEdges: (edges: Edge[]) => {
     set({ edges });
@@ -103,6 +108,7 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
     return node;
   },
   setNode: (id: string, node: Node) => {
+    console.log(111, id, node)
     set(produce((state: WorkflowState) => ({
       nodes:
         state.nodes.map(n => {

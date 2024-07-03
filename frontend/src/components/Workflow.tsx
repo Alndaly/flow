@@ -1,20 +1,15 @@
-import BaseEdge from './edges/Base';
-import { useShallow } from 'zustand/react/shallow';
-import useWorkflowStore, {
-	Actions,
-	Node,
-	WorkflowState,
-} from '@/store/workflow';
+import useWorkflowStore, { Node } from '@/store/workflow';
 import ReactFlow, { NodeTypes, Controls, Background } from 'reactflow';
 import '../styles/reactflow.scss';
 import AddNode from './nodes/AddNode';
 import NumberPreviewNode from './nodes/NumberPreviewNode';
 import BottomPanel from './BottomPanel';
 import { useReactFlow } from 'reactflow';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import MainEdge from './edges/MainEdge';
 
 const edgeTypes = {
-	base: BaseEdge,
+	mainEdge: MainEdge,
 };
 
 const nodeTypes: NodeTypes = {
@@ -35,10 +30,6 @@ export default function Flow() {
 		setNodes,
 	} = useWorkflowStore();
 
-	// useEffect(() => {
-	// 	console.log('nodes update', nodes);
-	// }, [nodes]);
-
 	const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		// 获取节点类型ID
@@ -48,14 +39,10 @@ export default function Flow() {
 			x: event.clientX,
 			y: event.clientY,
 		});
-		const newNode = new Node(type);
+		const newNode = new Node(type, position);
 		setNodes([...nodes, newNode]);
 		setNode(newNode.id, {
 			...newNode,
-			position: {
-				x: position.x,
-				y: position.y,
-			},
 		});
 	};
 

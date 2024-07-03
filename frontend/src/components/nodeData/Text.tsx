@@ -1,18 +1,50 @@
+import useWorkflowStore from '@/store/workflow';
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import { ChangeEvent } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useNodeId, useReactFlow } from 'reactflow';
 
 type TextDataProps = {
 	label: string;
 	id: string;
 	value: string;
 	io: string;
-	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function TextData(props: TextDataProps) {
-	const { label, value, io, id, onChange } = props;
+	const { label, value, io, id } = props;
+	const nodeId = useNodeId();
+	const { setNode, getNodeById } = useWorkflowStore();
+	const handleTextDataChange = (io: string, id: string, value: any) => {
+		const node = getNodeById(nodeId);
+		if (!node) return;
+		if (io === 'input') {
+			setNode(node.id, {
+				...node,
+				data: {
+					...node.data,
+					inputs: node.data.inputs.map((input) => {
+						if (input.label === id) {
+							return { ...input, data: value };
+						}
+						return input;
+					}),
+				},
+			});
+		} else if (io === 'output') {
+			setNode(node.id, {
+				...node,
+				data: {
+					...node.data,
+					outputs: node.data!.outputs!.map((output) => {
+						if (output.label === id) {
+							return { ...output, data: value };
+						}
+						return output;
+					}),
+				},
+			});
+		}
+	};
 	return (
 		<div className='w-full'>
 			{io === 'input' ? (
@@ -43,7 +75,7 @@ export default function TextData(props: TextDataProps) {
 				<Input
 					type='text'
 					defaultValue={value}
-					onChange={(event) => onChange(event.target.value, id)}
+					onChange={(event) => handleTextDataChange(io, id, event.target.value)}
 					className={clsx(
 						'block w-full rounded-lg border-none bg-black/5 py-1.5 px-3 text-sm/6 dark:bg-white/5',
 						'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25'

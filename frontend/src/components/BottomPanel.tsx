@@ -9,12 +9,12 @@ import useWorkflowStore from '@/store/workflow';
 export default function BottomPanel() {
 	const store = useStoreApi();
 
-	const { getNodes, setNodes, setEdges } = useReactFlow();
+	const { setNodes, setEdges } = useReactFlow();
 
-	const { setNode, nodes, edges } = useWorkflowStore();
+	const { setNode, nodes, edges, getNodeById } = useWorkflowStore();
 
 	const excuteNode = async (id: string) => {
-		const node = nodes.find((node) => node.id === id);
+		const node = getNodeById(id);
 		if (!node) {
 			throw new Error(`No node found with id ${id}`);
 		}
@@ -24,17 +24,10 @@ export default function BottomPanel() {
 			const unsetInputs = node.data.inputs.filter((input) => !input.data);
 			unsetInputs.forEach(async (input) => {
 				// 找到对应的边
-				if (
-					edges.filter(
-						(edge) =>
-							edge.target === node.id && edge.targetHandle === input.label
-					).length === 0
-				) {
-					throw new Error(
-						`No edge found for input ${input.label} in node ${node.id}`
-					);
-				}
-				const edge = edges[0];
+				const edge = edges.find(
+					(edge) => edge.target === node.id && edge.targetHandle === input.label
+				);
+				if(!edge) throw new Error(`No edge found for input ${input.label}`);
 				// 找到对应的输入节点
 				const fromNode = nodes.find((n) => n.id === edge.source);
 				if (!fromNode) {
@@ -87,9 +80,7 @@ export default function BottomPanel() {
 			(node) => node.data.outputs?.length === 0 || !node.data.outputs
 		);
 		tailNodes.forEach((tailNode) => {
-			// console.log(111, tailNode);
 			excuteNode(tailNode.id);
-			// console.log(222, tailNode);
 		});
 	};
 
@@ -99,10 +90,7 @@ export default function BottomPanel() {
 	};
 
 	const handleAdd = useCallback(() => {
-		setNodes([
-			{ id: '1', type: 'sample', position: { x: 250, y: 0 }, data: {} },
-		]);
-	}, [setNodes]);
+	}, []);
 
 	const handleSave = useCallback(() => {
 		console.log(store.getState());
