@@ -24,13 +24,13 @@ export type NodeOperation = (inputs: DataItem[]) => Promise<DataItem[]>;
 
 export class Edge {
   id: string;
-  type: string;
+  type?: string;
   source: string;
   target: string;
   sourceHandle?: string | null;
   targetHandle?: string | null;
 
-  constructor(type: string, source: string, target: string, sourceHandle?: string, targetHandle?: string) {
+  constructor(type: string, source: string, target: string, sourceHandle: string | null, targetHandle: string | null) {
     this.type = type;
     this.id = uuidv4();
     this.source = source;
@@ -94,7 +94,6 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
     });
   },
   onConnect: (connection: Connection) => {
-    // @ts-ignore
     const newEdge = new Edge('mainEdge', connection.source!, connection.target!, connection?.sourceHandle, connection?.targetHandle)
     set({
       edges: addEdge(newEdge, get().edges),

@@ -1,7 +1,7 @@
 import useWorkflowStore from '@/store/workflow';
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { Handle, Position, useNodeId } from 'reactflow';
 
 type TextDataProps = {
