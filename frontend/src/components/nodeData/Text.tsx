@@ -1,7 +1,8 @@
 import useWorkflowStore from '@/store/workflow';
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import { Handle, Position, useNodeId, useReactFlow } from 'reactflow';
+import { useCallback, useEffect } from 'react';
+import { Handle, Position, useNodeId } from 'reactflow';
 
 type TextDataProps = {
 	label: string;
@@ -11,40 +12,42 @@ type TextDataProps = {
 };
 
 export default function TextData(props: TextDataProps) {
-	const { label, value, io, id } = props;
+	const { label, io, id, value } = props;
 	const nodeId = useNodeId();
 	const { setNode, getNodeById } = useWorkflowStore();
-	const handleTextDataChange = (io: string, id: string, value: any) => {
-		const node = getNodeById(nodeId);
-		if (!node) return;
-		if (io === 'input') {
-			setNode(node.id, {
-				...node,
-				data: {
-					...node.data,
-					inputs: node.data.inputs.map((input) => {
-						if (input.label === id) {
-							return { ...input, data: value };
-						}
-						return input;
-					}),
-				},
-			});
-		} else if (io === 'output') {
-			setNode(node.id, {
-				...node,
-				data: {
-					...node.data,
-					outputs: node.data!.outputs!.map((output) => {
-						if (output.label === id) {
-							return { ...output, data: value };
-						}
-						return output;
-					}),
-				},
-			});
-		}
-	};
+	const handleTextDataChange = useCallback(
+		(io: string, id: string, value: any) => {
+			if (!nodeId) return;
+			if (io === 'input') {
+				setNode(getNodeById(nodeId)!.id, {
+					...getNodeById(nodeId)!,
+					data: {
+						...getNodeById(nodeId)!.data,
+						inputs: getNodeById(nodeId)!.data.inputs.map((input) => {
+							if (input.label === id) {
+								return { ...input, data: value };
+							}
+							return input;
+						}),
+					},
+				});
+			} else if (io === 'output') {
+				setNode(getNodeById(nodeId)!.id, {
+					...getNodeById(nodeId)!,
+					data: {
+						...getNodeById(nodeId)!.data,
+						outputs: getNodeById(nodeId)!.data!.outputs!.map((output) => {
+							if (output.label === id) {
+								return { ...output, data: value };
+							}
+							return output;
+						}),
+					},
+				});
+			}
+		},
+		[getNodeById, nodeId, setNode]
+	);
 	return (
 		<div className='w-full'>
 			{io === 'input' ? (
@@ -74,7 +77,7 @@ export default function TextData(props: TextDataProps) {
 				)}
 				<Input
 					type='text'
-					defaultValue={value}
+					value={value ? value : ''}
 					onChange={(event) => handleTextDataChange(io, id, event.target.value)}
 					className={clsx(
 						'block w-full rounded-lg border-none bg-black/5 py-1.5 px-3 text-sm/6 dark:bg-white/5',

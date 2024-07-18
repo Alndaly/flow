@@ -11,37 +11,6 @@ const addOperation: NodeOperation = async (inputs) => {
 
 export default function SampleNode(props: NodeProps) {
 	const { getNodeById, setNode } = useWorkflowStore();
-	const handleTextDataChange = (io: string, id: string, value: any) => {
-		const node = getNodeById(props.id);
-		if (!node) return;
-		if (io === 'input') {
-			setNode(node.id, {
-				...node,
-				data: {
-					...node.data,
-					inputs: node.data.inputs.map((input) => {
-						if (input.label === id) {
-							return { ...input, data: value };
-						}
-						return input;
-					}),
-				},
-			});
-		} else if (io === 'output') {
-			setNode(node.id, {
-				...node,
-				data: {
-					...node.data,
-					outputs: node.data!.outputs!.map((output) => {
-						if (output.label === id) {
-							return { ...output, data: value };
-						}
-						return output;
-					}),
-				},
-			});
-		}
-	};
 
 	useEffect(() => {
 		const node = getNodeById(props.id);
@@ -57,7 +26,7 @@ export default function SampleNode(props: NodeProps) {
 			},
 			operation: addOperation,
 		});
-	}, []);
+	}, [getNodeById, props.id, setNode]);
 
 	return (
 		<>
@@ -71,7 +40,6 @@ export default function SampleNode(props: NodeProps) {
 						{getNodeById(props.id)?.data.inputs.map((input, index) => (
 							<div className='relative p-3' key={index}>
 								<TextData
-									onChange={handleTextDataChange}
 									io='input'
 									id={input.label}
 									label={input.label}
@@ -85,7 +53,6 @@ export default function SampleNode(props: NodeProps) {
 							getNodeById(props.id)!.data.outputs!.map((output, index) => (
 								<div className='relative p-3' key={index}>
 									<TextData
-										onChange={handleTextDataChange}
 										io='output'
 										id={output.label}
 										label={output.label}

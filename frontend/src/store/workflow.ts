@@ -62,6 +62,7 @@ export class Node {
 }
 
 export type WorkflowState = {
+  executingNode: Node | null;
   nodes: Node[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
@@ -74,10 +75,12 @@ export type Actions = {
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
   setNode: (id: string, node: Node) => void;
+  setExecutingNode: (node: Node | null) => void;
 }
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
+  executingNode: null,
   nodes: [],
   edges: [],
   onNodesChange: (changes: NodeChange[]) => {
@@ -108,7 +111,6 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
     return node;
   },
   setNode: (id: string, node: Node) => {
-    console.log(111, id, node)
     set(produce((state: WorkflowState) => ({
       nodes:
         state.nodes.map(n => {
@@ -118,7 +120,10 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
           return n;
         })
     })))
-  }
+  },
+  setExecutingNode(node) {
+    set({ executingNode: node });
+  },
 }));
 
 export default useWorkflowStore;

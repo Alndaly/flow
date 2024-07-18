@@ -5,49 +5,71 @@ import AddIcon from '@/assets/addIcon';
 import { useCallback } from 'react';
 import { useReactFlow, Panel, useStoreApi } from 'reactflow';
 import useWorkflowStore from '@/store/workflow';
+// import { utils } from '@kinda/utils';
 
 export default function BottomPanel() {
 	const store = useStoreApi();
 
 	const { setNodes, setEdges } = useReactFlow();
 
-	const { setNode, nodes, edges, getNodeById } = useWorkflowStore();
+	const { setNode, nodes, edges, getNodeById, setExecutingNode } =
+		useWorkflowStore();
 
 	const excuteNode = async (id: string) => {
-		const node = getNodeById(id);
-		if (!node) {
-			throw new Error(`No node found with id ${id}`);
+		if (!getNodeById(id)) {
+			throw new Error(`要执行的节点${id}找不到`);
 		}
-		// 执行尾节点
-		if (node.operation) {
-			// 找到不完整的输入项列表
-			const unsetInputs = node.data.inputs.filter((input) => !input.data);
-			unsetInputs.forEach(async (input) => {
+		console.debug(`进入节点${id}`);
+		setExecutingNode(getNodeById(id)!);
+		// 执行节点
+		if (getNodeById(id)!.operation) {
+			// await utils.sleep(1000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
+			const inputs = getNodeById(id)!.data.inputs;
+			for (const input of inputs) {
+				console.debug(`开始获取节点: ${id}的输入项${input.label}`);
 				// 找到对应的边
 				const edge = edges.find(
-					(edge) => edge.target === node.id && edge.targetHandle === input.label
+					(edge) =>
+						edge.target === getNodeById(id)!.id &&
+						edge.targetHandle === input.label
 				);
-				if(!edge) throw new Error(`No edge found for input ${input.label}`);
+				if (!edge && !input.data) {
+					throw new Error(
+						`节点${id}的输入项${input.label}没有输入并且找不到上级连线节点`
+					);
+				} else if (!edge) {
+					console.debug(
+						`节点${id}输入项${input.label}不需要从上级节点获取，具体数值为${input.data}`
+					);
+					continue;
+				}
 				// 找到对应的输入节点
 				const fromNode = nodes.find((n) => n.id === edge.source);
 				if (!fromNode) {
-					throw new Error(`No node found for edge ${edge.id}`);
+					throw '存在连线，但找不到上级节点';
 				}
+				console.debug(
+					`节点${id}输入项${input.label}需要从上级节点获取，前往执行上级节点${fromNode.id}`
+				);
 				// 执行输入节点
 				const outputs = await excuteNode(fromNode.id);
 				// 获取输出项
 				const output = outputs.find(
 					(output) => output.label === edge.sourceHandle
 				);
+				console.debug(
+					`节点${id}输入项${input.label}获取成功，对应的是上级节点${fromNode.id}的输出项，具体输出项是${edge.sourceHandle}，数值为`,
+					output
+				);
 				if (!output) {
-					throw new Error(`No output found for edge ${edge.id}`);
+					throw new Error(`连线${edge.id}没有输出`);
 				}
 				// 设置输入项的值
-				setNode(node.id, {
-					...node,
+				setNode(getNodeById(id)!.id, {
+					...getNodeById(id)!,
 					data: {
-						...node.data,
-						inputs: node.data.inputs.map((input) => {
+						...getNodeById(id)!.data,
+						inputs: getNodeById(id)!.data.inputs.map((input) => {
 							if (input.label === edge.targetHandle) {
 								return {
 									...input,
@@ -58,23 +80,35 @@ export default function BottomPanel() {
 						}),
 					},
 				});
-			});
-			const outputs = await node.operation(node.data.inputs);
-			setNode(node.id, {
-				...node,
+			}
+			console.debug(
+				`获取当前节点${id}的所有输入成功，打印具体数值：`,
+				getNodeById(id)!.data.inputs
+			);
+			console.debug(`开始执行节点${id}的operate`, getNodeById(id)!.operation);
+			const outputs = await getNodeById(id)!.operation!(
+				getNodeById(id)!.data.inputs
+			);
+			setNode(getNodeById(id)!.id, {
+				...getNodeById(id)!,
 				data: {
-					...node.data,
+					...getNodeById(id)!.data,
 					outputs: outputs,
 				},
 			});
+			console.debug(
+				`执行节点${id}完成，打印当前的所有输出：`,
+				getNodeById(id)!.data.outputs
+			);
+			setExecutingNode(null);
 			return outputs;
 		} else {
-			throw new Error(`No operation defined for this node, nodeID ${node.id}`);
+			setExecutingNode(null);
+			throw new Error(`节点${id}未定义操作函数`);
 		}
 	};
 
 	const handleStart = () => {
-		console.log('执行工作流');
 		// 找到尾节点并且执行 判断尾节点的标准是没有edge链接这个尾节点的输出或者没有输出
 		const tailNodes = nodes.filter(
 			(node) => node.data.outputs?.length === 0 || !node.data.outputs
@@ -89,8 +123,7 @@ export default function BottomPanel() {
 		setEdges([]);
 	};
 
-	const handleAdd = useCallback(() => {
-	}, []);
+	const handleAdd = useCallback(() => {}, []);
 
 	const handleSave = useCallback(() => {
 		console.log(store.getState());

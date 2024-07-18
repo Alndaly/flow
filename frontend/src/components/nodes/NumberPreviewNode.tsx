@@ -34,6 +34,7 @@ export default function NumberPreviewNode(props: NodeProps) {
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.inputs.map((input, index) => (
 							<div className='relative p-3' key={index}>
+								<div>{input.data}</div>
 								<TextData
 									io='input'
 									id={input.label}
@@ -47,6 +48,7 @@ export default function NumberPreviewNode(props: NodeProps) {
 						{getNodeById(props.id)?.data.outputs &&
 							getNodeById(props.id)!.data.outputs!.map((output, index) => (
 								<div className='relative p-3' key={index}>
+									<div>{output.data}</div>
 									<TextData
 										io='output'
 										id={output.label}
