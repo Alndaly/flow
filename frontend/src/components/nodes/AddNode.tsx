@@ -9,7 +9,8 @@ const addOperation: NodeOperation = async (inputs) => {
 	return [{ type: 'number', label: 'output1', data: sum }];
 };
 
-export default function SampleNode(props: NodeProps) {
+export default function AddNode(props: NodeProps) {
+	const { selected } = props;
 	const { getNodeById, setNode } = useWorkflowStore();
 
 	useEffect(() => {
@@ -29,14 +30,17 @@ export default function SampleNode(props: NodeProps) {
 	}, [getNodeById, props.id, setNode]);
 
 	return (
-		<>
+		<div
+			className={`${
+				selected ? 'outline-1 outline outline-blue-500' : ''
+			} rounded-md p-3 shadow hover:shadow-md bg-white dark:bg-black/20 backdrop-blur-lg transition-all`}>
 			<div className='pb-2'>
 				<div className='font-bold'>Add Node</div>
 				{import.meta.env.DEV && (
 					<div className='text-sm'>{getNodeById(props.id)?.id}</div>
 				)}
 			</div>
-			<div className='rounded-lg shadow p-3 bg-white dark:bg-black/20 backdrop-blur-lg'>
+			<div>
 				<div className='divide-y'>
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.inputs.map((input, index) => (
@@ -65,6 +69,6 @@ export default function SampleNode(props: NodeProps) {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
