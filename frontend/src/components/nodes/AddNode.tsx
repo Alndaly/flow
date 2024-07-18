@@ -32,7 +32,9 @@ export default function SampleNode(props: NodeProps) {
 		<>
 			<div className='pb-2'>
 				<div className='font-bold'>Add Node</div>
-				<div className='text-sm'>{getNodeById(props.id)?.id}</div>
+				{import.meta.env.DEV && (
+					<div className='text-sm'>{getNodeById(props.id)?.id}</div>
+				)}
 			</div>
 			<div className='rounded-lg shadow p-3 bg-white dark:bg-black/20 backdrop-blur-lg'>
 				<div className='divide-y'>

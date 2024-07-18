@@ -23,17 +23,19 @@ export default function MainEdge({
 	return (
 		<>
 			<BaseEdge id={id} path={edgePath} />
-			<EdgeLabelRenderer>
-				<div
-					style={{
-						position: 'absolute',
-						transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-						pointerEvents: 'all',
-					}}
-					className='nodrag nopan text-sm'>
-					{id}
-				</div>
-			</EdgeLabelRenderer>
+			{import.meta.env.DEV && (
+				<EdgeLabelRenderer>
+					<div
+						style={{
+							position: 'absolute',
+							transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+							pointerEvents: 'all',
+						}}
+						className='nodrag nopan text-sm'>
+						{id}
+					</div>
+				</EdgeLabelRenderer>
+			)}
 		</>
 	);
 }
