@@ -48,6 +48,7 @@ export class Node {
   position: XYPosition = { x: 0, y: 0 };
   type?: string;
   id: string;
+  status?: 'todo' | 'running' | 'done' | 'error';
   data: {
     inputs: DataItem[];  // 输入项的标签列表
     outputs?: DataItem[]; // 输出项的标签列表

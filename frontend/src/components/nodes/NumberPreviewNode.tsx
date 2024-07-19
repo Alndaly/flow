@@ -28,7 +28,7 @@ export default function NumberPreviewNode(props: NodeProps) {
 		<div
 			className={`${
 				selected ? 'outline-1 outline outline-blue-500' : ''
-			} rounded-md p-3 shadow hover:shadow-md bg-white dark:bg-black/20 backdrop-blur-lg transition-all`}>
+			} rounded-lg p-3 shadow hover:shadow-lg bg-white dark:bg-black/20 backdrop-blur-lg transition-all`}>
 			<div className='pb-2'>
 				<div className='font-bold'>Number Preview Node</div>
 				{import.meta.env.DEV && (

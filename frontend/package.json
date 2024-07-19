@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.0.4",
     "@reduxjs/toolkit": "^2.2.6",
+    "ahooks": "^3.8.0",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "nanoid": "^5.0.7",

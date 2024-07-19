@@ -31,7 +31,7 @@ export default function NodeSearch() {
 		event.dataTransfer.effectAllowed = 'move';
 	};
 	return (
-		<>
+		<div className='flex-1 p-5'>
 			<h1 className='text-xl font-bold mb-3'>Node Search</h1>
 			<Input
 				type='text'
@@ -46,7 +46,8 @@ export default function NodeSearch() {
 					'mb-3'
 				)}
 			/>
-			<div>
+			<hr className='my-5' />
+			<div className='flex-1'>
 				{nodesAvailable
 					.filter((node) =>
 						node.type.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
@@ -57,13 +58,13 @@ export default function NodeSearch() {
 								draggable
 								onDragStart={(e) => onDragStart(e, node)}
 								key={index}
-								className='flex flex-col mb-3 rounded-lg dark:bg-black bg-white p-3 cursor-pointer'>
+								className='hover:bg-sky-50 outline outline-1 outline-sky-100 flex flex-col mb-3 rounded-lg dark:bg-black bg-white p-3 cursor-pointer'>
 								<div className='font-bold'>{node.type}</div>
 								<div className='text-sm text-gray-500'>{node.description}</div>
 							</div>
 						);
 					})}
 			</div>
-		</>
+		</div>
 	);
 }
