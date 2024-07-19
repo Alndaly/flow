@@ -130,28 +130,28 @@ export default function BottomPanel() {
 	}, [store]);
 
 	return (
-		<Panel position='bottom-center'>
-			<div className='bg-white dark:bg-black/20 rounded-lg px-5 py-3 backdrop-blur-sm bg-transparent border-gray-400 shadow flex items-center gap-5'>
-				<div
-					className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
-					onClick={handleStart}>
-					<StartIcon />
-				</div>
-				<div
-					className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
-					onClick={handleAdd}>
-					<AddIcon />
-				</div>
-				<div
-					className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
-					onClick={handleClear}>
-					<ClearIcon />
-				</div>
-				<div
-					className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
-					onClick={handleSave}>
-					<SaveIcon />
-				</div>
+		<Panel
+			position='bottom-center'
+			className='p-3 bg-white/20 dark:bg-black/20 flex items-center gap-5 rounded-lg shadow'>
+			<div
+				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
+				onClick={handleStart}>
+				<StartIcon />
+			</div>
+			<div
+				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
+				onClick={handleAdd}>
+				<AddIcon />
+			</div>
+			<div
+				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
+				onClick={handleClear}>
+				<ClearIcon />
+			</div>
+			<div
+				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
+				onClick={handleSave}>
+				<SaveIcon />
 			</div>
 		</Panel>
 	);

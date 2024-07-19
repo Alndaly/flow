@@ -4,6 +4,7 @@ import AddNode from './nodes/AddNode';
 import NumberPreviewNode from './nodes/NumberPreviewNode';
 import BottomPanel from './BottomPanel';
 import { useReactFlow } from '@xyflow/react';
+import { useTheme } from './ThemeProvider';
 import { useRef } from 'react';
 import MainEdge from './edges/MainEdge';
 
@@ -17,6 +18,7 @@ const nodeTypes: NodeTypes = {
 };
 
 export default function Flow() {
+	const { theme } = useTheme();
 	const reactFlow = useReactFlow();
 	const graphWrapper = useRef(null);
 	const {
@@ -62,7 +64,7 @@ export default function Flow() {
 			onNodesChange={onNodesChange}
 			onEdgesChange={onEdgesChange}
 			onConnect={onConnect}
-			colorMode={'dark'}
+			colorMode={theme}
 			edgeTypes={edgeTypes}
 			onDrop={(e) => onDrop(e)}
 			onDragOver={(e) => onDragOver(e)}

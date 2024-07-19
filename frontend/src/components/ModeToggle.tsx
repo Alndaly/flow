@@ -1,13 +1,17 @@
 'use client';
+import { useTheme } from './ThemeProvider';
 
 export function ModeToggle() {
-
+	const { setTheme, theme } = useTheme();
+	const handleClick = () => {
+		setTheme(theme === 'dark' ? 'light' : 'dark');
+	};
 	return (
 		<button
-			// onClick={handleClick}
+			onClick={handleClick}
 			className='border rounded-full w-8 h-8 flex items-center justify-center border-black dark:border-white'>
 			<span className='sr-only'>Toggle mode</span>
-			{localStorage.getItem('theme') !== 'dark' ? (
+			{theme !== 'dark' ? (
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
 					fill='none'
