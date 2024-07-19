@@ -12,13 +12,13 @@
   "dependencies": {
     "@headlessui/react": "^2.0.4",
     "@reduxjs/toolkit": "^2.2.6",
+    "@xyflow/react": "^12.0.3",
     "ahooks": "^3.8.0",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "nanoid": "^5.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "reactflow": "^11.11.3",
     "redux": "^5.0.1",
     "uuid": "^10.0.0",
     "zustand": "^4.5.2"

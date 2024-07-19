@@ -3,7 +3,7 @@ import SaveIcon from '@/assets/saveIcon';
 import StartIcon from '@/assets/startIcon';
 import AddIcon from '@/assets/addIcon';
 import { useCallback } from 'react';
-import { useReactFlow, Panel, useStoreApi } from 'reactflow';
+import { useReactFlow, Panel, useStoreApi } from '@xyflow/react';
 import useWorkflowStore from '@/store/workflow';
 // import { utils } from '@kinda/utils';
 
@@ -25,7 +25,7 @@ export default function BottomPanel() {
 		if (getNodeById(id)!.operation) {
 			// await utils.sleep(1000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
 			const inputs = getNodeById(id)!.data.inputs;
-			for (const input of inputs) {
+			for (const input of inputs!) {
 				console.debug(`开始获取节点: ${id}的输入项${input.label}`);
 				// 找到对应的边
 				const edge = edges.find(
@@ -69,7 +69,7 @@ export default function BottomPanel() {
 					...getNodeById(id)!,
 					data: {
 						...getNodeById(id)!.data,
-						inputs: getNodeById(id)!.data.inputs.map((input) => {
+						inputs: getNodeById(id)!.data.inputs!.map((input) => {
 							if (input.label === edge.targetHandle) {
 								return {
 									...input,
@@ -87,7 +87,7 @@ export default function BottomPanel() {
 			);
 			console.debug(`开始执行节点${id}的operate`, getNodeById(id)!.operation);
 			const outputs = await getNodeById(id)!.operation!(
-				getNodeById(id)!.data.inputs
+				getNodeById(id)!.data.inputs!
 			);
 			setNode(getNodeById(id)!.id, {
 				...getNodeById(id)!,

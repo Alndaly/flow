@@ -58,9 +58,9 @@ export default function NodeSearch() {
 								draggable
 								onDragStart={(e) => onDragStart(e, node)}
 								key={index}
-								className='hover:bg-sky-50 outline outline-1 outline-sky-100 flex flex-col mb-3 rounded-lg dark:bg-black bg-white p-3 cursor-pointer'>
+								className='hover:bg-sky-50 dark:hover:bg-sky-800 outline outline-1 outline-sky-100 dark:outline-sky-800 flex flex-col mb-3 rounded-lg dark:bg-black/20 bg-white p-3 cursor-pointer'>
 								<div className='font-bold'>{node.type}</div>
-								<div className='text-sm text-gray-500'>{node.description}</div>
+								<div className='text-sm'>{node.description}</div>
 							</div>
 						);
 					})}

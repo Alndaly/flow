@@ -2,7 +2,7 @@ import useWorkflowStore from '@/store/workflow';
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
 import { useCallback } from 'react';
-import { Handle, Position, useNodeId } from 'reactflow';
+import { Handle, Position, useNodeId } from '@xyflow/react';
 
 type TextDataProps = {
 	label: string;
@@ -23,7 +23,7 @@ export default function TextData(props: TextDataProps) {
 					...getNodeById(nodeId)!,
 					data: {
 						...getNodeById(nodeId)!.data,
-						inputs: getNodeById(nodeId)!.data.inputs.map((input) => {
+						inputs: getNodeById(nodeId)!.data.inputs!.map((input) => {
 							if (input.label === id) {
 								return { ...input, data: value };
 							}

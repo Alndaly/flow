@@ -1,4 +1,4 @@
-import { NodeProps } from 'reactflow';
+import { NodeProps } from '@xyflow/react';
 import { useEffect } from 'react';
 import TextData from '../nodeData/Text';
 import useWorkflowStore from '@/store/workflow';
@@ -43,7 +43,7 @@ export default function AddNode(props: NodeProps) {
 			<div>
 				<div className='divide-y'>
 					<div className='divide-y'>
-						{getNodeById(props.id)?.data.inputs.map((input, index) => (
+						{getNodeById(props.id)?.data.inputs!.map((input, index) => (
 							<div className='relative p-3' key={index}>
 								<TextData
 									io='input'

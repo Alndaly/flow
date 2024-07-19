@@ -1,10 +1,9 @@
 import useWorkflowStore, { Node } from '@/store/workflow';
-import ReactFlow, { NodeTypes, Controls, Background } from 'reactflow';
-import '../styles/reactflow.scss';
+import { ReactFlow, NodeTypes, Controls, Background } from '@xyflow/react';
 import AddNode from './nodes/AddNode';
 import NumberPreviewNode from './nodes/NumberPreviewNode';
 import BottomPanel from './BottomPanel';
-import { useReactFlow } from 'reactflow';
+import { useReactFlow } from '@xyflow/react';
 import { useRef } from 'react';
 import MainEdge from './edges/MainEdge';
 
@@ -52,25 +51,25 @@ export default function Flow() {
 	};
 
 	return (
-		<>
-			<ReactFlow
-				ref={graphWrapper}
-				nodes={nodes}
-				panOnScroll={true}
-				zoomOnScroll={false}
-				zoomOnDoubleClick={false}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-				edgeTypes={edgeTypes}
-				onDrop={(e) => onDrop(e)}
-				onDragOver={(e) => onDragOver(e)}
-				nodeTypes={nodeTypes}>
-				<Background />
-				<Controls />
-				<BottomPanel />
-			</ReactFlow>
-		</>
+		<ReactFlow
+			className='bg-transparent'
+			ref={graphWrapper}
+			nodes={nodes}
+			panOnScroll={true}
+			zoomOnScroll={false}
+			zoomOnDoubleClick={false}
+			edges={edges}
+			onNodesChange={onNodesChange}
+			onEdgesChange={onEdgesChange}
+			onConnect={onConnect}
+			colorMode={'dark'}
+			edgeTypes={edgeTypes}
+			onDrop={(e) => onDrop(e)}
+			onDragOver={(e) => onDragOver(e)}
+			nodeTypes={nodeTypes}>
+			<Background />
+			<Controls />
+			<BottomPanel />
+		</ReactFlow>
 	);
 }

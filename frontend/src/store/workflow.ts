@@ -12,7 +12,7 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   XYPosition,
-} from 'reactflow';
+} from '@xyflow/react';
 
 export interface DataItem {
   type: string;
@@ -50,7 +50,7 @@ export class Node {
   id: string;
   status?: 'todo' | 'running' | 'done' | 'error';
   data: {
-    inputs: DataItem[];  // 输入项的标签列表
+    inputs?: DataItem[];  // 输入项的标签列表
     outputs?: DataItem[]; // 输出项的标签列表
   } = { inputs: [] }
   operation?: NodeOperation;
