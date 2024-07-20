@@ -35,8 +35,8 @@ export default function NumberPreviewNode(props: NodeProps) {
 					<div className='text-sm'>{getNodeById(props.id)?.id}</div>
 				)}
 			</div>
-			<div>
-				<div className='divide-y'>
+			<div className='divide-y'>
+				{getNodeById(props.id)?.data.inputs && (
 					<div className='divide-y'>
 						{getNodeById(props.id)?.data.inputs!.map((input, index) => (
 							<div className='relative p-3' key={index}>
@@ -49,20 +49,21 @@ export default function NumberPreviewNode(props: NodeProps) {
 							</div>
 						))}
 					</div>
+				)}
+				{getNodeById(props.id)?.data.outputs && (
 					<div className='divide-y'>
-						{getNodeById(props.id)?.data.outputs &&
-							getNodeById(props.id)!.data.outputs!.map((output, index) => (
-								<div className='relative p-3' key={index}>
-									<TextData
-										io='output'
-										id={output.label}
-										label={output.label}
-										value={output.data}
-									/>
-								</div>
-							))}
+						{getNodeById(props.id)!.data.outputs!.map((output, index) => (
+							<div className='relative p-3' key={index}>
+								<TextData
+									io='output'
+									id={output.label}
+									label={output.label}
+									value={output.data}
+								/>
+							</div>
+						))}
 					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);
