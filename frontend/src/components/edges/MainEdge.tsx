@@ -22,7 +22,7 @@ export default function MainEdge({
 
 	return (
 		<>
-			<BaseEdge id={id} path={edgePath} />
+			<BaseEdge id={id} path={edgePath} style={{ strokeWidth: 2 }} />
 			{import.meta.env.DEV && (
 				<EdgeLabelRenderer>
 					<div

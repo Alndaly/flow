@@ -29,9 +29,7 @@ class BaseLogger(object):
         self.logger.addHandler(sh)  # 把对象加到logger里
         self.logger.addHandler(th)
 
-feishu_log = BaseLogger('feishu.log').logger
 exception_logger = BaseLogger("exception.log").logger
-chat_logger = BaseLogger("chat.log").logger
 
 def log_exception():
     exception_logger.error(traceback.format_exc())

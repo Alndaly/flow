@@ -19,7 +19,7 @@ export default function NumberPreviewNode(props: NodeProps) {
 			operation: numberPreviewOperation,
 			data: {
 				...node.data,
-				inputs: [{ type: 'number', label: 'input1', data: null }],
+				inputs: [{ type: 'number', label: 'input1', data: null, required: true }],
 			},
 		});
 	}, []);

@@ -14,19 +14,26 @@ import {
   XYPosition,
 } from '@xyflow/react';
 
-export interface DataItem {
+export interface InputDataItem {
+  type: string;
+  label: string;
+  required: boolean;
+  data: any;
+}
+
+export interface OutputDataItem {
   type: string;
   label: string;
   data: any;
 }
 
-export type NodeOperation = (inputs: DataItem[]) => Promise<DataItem[]>;
+export type NodeOperation = (inputs: InputDataItem[]) => Promise<OutputDataItem[]>;
 
 export class Edge {
   id: string;
-  type?: string;
   source: string;
   target: string;
+  type?: string;
   sourceHandle?: string | null;
   targetHandle?: string | null;
 
@@ -46,12 +53,12 @@ export class Edge {
 
 export class Node {
   position: XYPosition = { x: 0, y: 0 };
-  type?: string;
   id: string;
+  type?: string;
   status?: 'todo' | 'running' | 'done' | 'error';
   data: {
-    inputs?: DataItem[];  // 输入项的标签列表
-    outputs?: DataItem[]; // 输出项的标签列表
+    inputs?: InputDataItem[];  // 输入项的标签列表
+    outputs?: OutputDataItem[]; // 输出项的标签列表
   } = { inputs: [] }
   operation?: NodeOperation;
 

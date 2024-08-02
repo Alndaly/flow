@@ -20,8 +20,8 @@ export default function AddNode(props: NodeProps) {
 			...node,
 			data: {
 				inputs: [
-					{ type: 'number', label: 'input1', data: null },
-					{ type: 'number', label: 'input2', data: null },
+					{ type: 'number', label: 'input1', data: null, required: true },
+					{ type: 'number', label: 'input2', data: null, required: true },
 				],
 				outputs: [{ type: 'number', label: 'output1', data: null }],
 			},
