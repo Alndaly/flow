@@ -4,6 +4,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { ThemeProvider } from './components/ThemeProvider';
 import { ModeToggle } from './components/ModeToggle';
+import RightInputs from './components/RightInputs';
 
 function App() {
 	return (
@@ -26,6 +27,9 @@ function App() {
 					</div>
 					<div className='shadow overflow-hidden flex-1 h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
 						<Workflow />
+					</div>
+					<div className='flex flex-col shadow rounded-lg bg-white/50 min-w-[300px] backdrop-blur-lg dark:bg-black/50'>
+						<RightInputs />
 					</div>
 				</div>
 			</ReactFlowProvider>

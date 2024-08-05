@@ -5,3 +5,35 @@
 .react-flow__background {
 	background-color: transparent !important;
 }
+
+.rotating-outline {
+	position: relative;
+}
+
+.rotating-outline::before {
+	content: '';
+	position: absolute;
+	top: -100px;
+	left: -100px;
+	right: -100px;
+	bottom: -100px;
+	background: conic-gradient(
+		from -160deg at 50% 50%,
+		#e92a67 0deg,
+		#a853ba 120deg,
+		#2a8af6 240deg,
+		rgba(42, 138, 246, 0) 360deg
+	);
+	mask-composite: exclude;
+	animation: spinner 4s linear infinite;
+	z-index: -1;
+}
+
+@keyframes spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

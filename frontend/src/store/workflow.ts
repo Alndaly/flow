@@ -19,12 +19,16 @@ export interface InputDataItem {
   label: string;
   required: boolean;
   data: any;
+  showHandle: boolean;
+  showData: boolean;
 }
 
 export interface OutputDataItem {
   type: string;
   label: string;
   data: any;
+  showHandle: boolean;
+  showData: boolean;
 }
 
 export type NodeOperation = (inputs: InputDataItem[]) => Promise<OutputDataItem[]>;
@@ -55,7 +59,7 @@ export class Node {
   position: XYPosition = { x: 0, y: 0 };
   id: string;
   type?: string;
-  status?: 'todo' | 'running' | 'done' | 'error';
+  status?: 'running' | 'done' | 'todo' | 'error';
   data: {
     inputs?: InputDataItem[];  // 输入项的标签列表
     outputs?: OutputDataItem[]; // 输出项的标签列表
@@ -83,7 +87,6 @@ export type Actions = {
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
   setNode: (id: string, node: Node) => void;
-  setExecutingNode: (node: Node | null) => void;
 }
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
@@ -127,9 +130,6 @@ const useWorkflowStore = create<WorkflowState & Actions>((set, get) => ({
           return n;
         })
     })))
-  },
-  setExecutingNode(node) {
-    set({ executingNode: node });
   },
 }));
 

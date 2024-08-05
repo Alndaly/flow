@@ -5,25 +5,23 @@ import AddIcon from '@/assets/addIcon';
 import { useCallback } from 'react';
 import { useReactFlow, Panel, useStoreApi } from '@xyflow/react';
 import useWorkflowStore from '@/store/workflow';
-// import { utils } from '@kinda/utils';
+import { utils } from '@kinda/utils';
 
 export default function BottomPanel() {
 	const store = useStoreApi();
 
 	const { setNodes, setEdges } = useReactFlow();
 
-	const { setNode, nodes, edges, getNodeById, setExecutingNode } =
-		useWorkflowStore();
+	const { setNode, nodes, edges, getNodeById } = useWorkflowStore();
 
 	const excuteNode = async (id: string) => {
 		if (!getNodeById(id)) {
 			throw new Error(`要执行的节点${id}找不到`);
 		}
 		console.debug(`进入节点${id}`);
-		setExecutingNode(getNodeById(id)!);
 		// 执行节点
 		if (getNodeById(id)!.operation) {
-			// await utils.sleep(1000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
+			// 设置输入项的值
 			const inputs = getNodeById(id)!.data.inputs;
 			for (const input of inputs!) {
 				console.debug(`开始获取节点: ${id}的输入项${input.label}`);
@@ -33,9 +31,13 @@ export default function BottomPanel() {
 						edge.target === getNodeById(id)!.id &&
 						edge.targetHandle === input.label
 				);
-				if (!edge && !input.data) {
+				if (!edge && !input.data && input.required) {
+					setNode(getNodeById(id)!.id, {
+						...getNodeById(id)!,
+						status: 'error',
+					});
 					throw new Error(
-						`节点${id}的输入项${input.label}没有输入并且找不到上级连线节点`
+						`节点${id}的必填输入项${input.label}没有输入并且找不到上级连线节点`
 					);
 				} else if (!edge) {
 					console.debug(
@@ -51,7 +53,6 @@ export default function BottomPanel() {
 				console.debug(
 					`节点${id}输入项${input.label}需要从上级节点获取，前往执行上级节点${fromNode.id}`
 				);
-				// 执行输入节点
 				const outputs = await excuteNode(fromNode.id);
 				// 获取输出项
 				const output = outputs.find(
@@ -86,11 +87,22 @@ export default function BottomPanel() {
 				getNodeById(id)!.data.inputs
 			);
 			console.debug(`开始执行节点${id}的operate`, getNodeById(id)!.operation);
-			const outputs = await getNodeById(id)!.operation!(
-				getNodeById(id)!.data.inputs!
-			);
 			setNode(getNodeById(id)!.id, {
 				...getNodeById(id)!,
+				status: 'running',
+			});
+			let outputs = null;
+			if (getNodeById(id)!.status === 'done') {
+				outputs = getNodeById(id)!.data.outputs;
+			} else {
+				await utils.sleep(1000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
+				outputs = await getNodeById(id)!.operation!(
+					getNodeById(id)!.data.inputs!
+				);
+			}
+			setNode(getNodeById(id)!.id, {
+				...getNodeById(id)!,
+				status: 'done',
 				data: {
 					...getNodeById(id)!.data,
 					outputs: outputs,
@@ -100,10 +112,8 @@ export default function BottomPanel() {
 				`执行节点${id}完成，打印当前的所有输出：`,
 				getNodeById(id)!.data.outputs
 			);
-			setExecutingNode(null);
 			return outputs;
 		} else {
-			setExecutingNode(null);
 			throw new Error(`节点${id}未定义操作函数`);
 		}
 	};

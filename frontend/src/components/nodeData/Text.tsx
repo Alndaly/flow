@@ -9,10 +9,13 @@ type TextDataProps = {
 	id: string;
 	value: string;
 	io: string;
+	showHandle: boolean;
+	showData: boolean;
+	required?: boolean;
 };
 
 export default function TextData(props: TextDataProps) {
-	const { label, io, id, value } = props;
+	const { label, io, id, value, showHandle, showData, required } = props;
 	const nodeId = useNodeId();
 	const { setNode, getNodeById } = useWorkflowStore();
 	const handleTextDataChange = useCallback(
@@ -50,16 +53,17 @@ export default function TextData(props: TextDataProps) {
 	);
 	return (
 		<div className='w-full'>
-			{io === 'input' ? (
+			{showHandle && io === 'input' && (
 				<Handle
-					className='absolute top-center left-0 -translate-x-1/2 w-3 h-3 shadow'
+					className='absolute top-center left-0 -translate-1/2 w-3 h-3 shadow'
 					type='target'
 					position={Position.Left}
 					id={id}
 				/>
-			) : (
+			)}
+			{showHandle && io === 'output' && (
 				<Handle
-					className='absolute top-center right-0 translate-x-1/2 w-3 h-3 shadow'
+					className='absolute top-center right-0 translate-1/2 w-3 h-3 shadow'
 					type='source'
 					position={Position.Right}
 					id={id}
@@ -67,23 +71,30 @@ export default function TextData(props: TextDataProps) {
 			)}
 			<Field>
 				{io === 'input' ? (
-					<Label className='max-w-[20em] text-sm/6 font-medium line-clamp-1'>
-						{label}
+					<Label className='max-w-[20em] text-sm/6 font-medium'>
+						<div className='flex flex-row justify-between pb-1'>
+							<div>{label}</div>
+							{required && <div className='rounded-full px-2 border text-sm'>必填</div>}
+						</div>
 					</Label>
 				) : (
 					<Label className='max-w-[20em] text-right text-sm/6 font-medium line-clamp-1'>
-						{label}
+						<div>{label}</div>
 					</Label>
 				)}
-				<Input
-					type='text'
-					value={value ? value : ''}
-					onChange={(event) => handleTextDataChange(io, id, event.target.value)}
-					className={clsx(
-						'block w-full rounded-lg border-none bg-black/5 py-1.5 px-3 text-sm/6 dark:bg-white/5',
-						'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25'
-					)}
-				/>
+				{showData && (
+					<Input
+						type='text'
+						value={value ? value : ''}
+						onChange={(event) =>
+							handleTextDataChange(io, id, event.target.value)
+						}
+						className={clsx(
+							'block w-full rounded-lg border-none bg-black/5 py-1.5 px-3 text-sm/6 dark:bg-white/5',
+							'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25'
+						)}
+					/>
+				)}
 			</Field>
 		</div>
 	);
