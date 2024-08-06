@@ -24,7 +24,8 @@ function App() {
 							<ModeToggle />
 						</div>
 					</div>
-					<div className='shadow overflow-hidden flex-1 h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
+					<div
+						className='shadow overflow-hidden flex-1 h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
 						<Workflow />
 					</div>
 				</div>

@@ -29,10 +29,10 @@ export default function Flow() {
 		onEdgesChange,
 		setNode,
 		setNodes,
+		setEdges,
 	} = useWorkflowStore();
 
-	const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
-		event.preventDefault();
+	const onNodeDrop = (event: React.DragEvent<HTMLDivElement>) => {
 		// 获取节点类型ID
 		const type = event.dataTransfer.getData('application/reactflow');
 		// 使用 project 将像素坐标转换为内部 ReactFlow 坐标系
@@ -47,10 +47,35 @@ export default function Flow() {
 		});
 	};
 
-	const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-		event.preventDefault();
-		event.dataTransfer.dropEffect = 'move';
+	const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'move';
 	};
+
+	const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+	};
+
+	const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		if (e.dataTransfer.files.length > 0) {
+			handleFiles(e.dataTransfer.files);
+		} else {
+			onNodeDrop(e);
+		}
+	};
+
+	function handleFiles(files: FileList) {
+		for (const file of files) {
+			const fileReader = new FileReader();
+			fileReader.onload = (event) => {
+				const { edges, nodes } = JSON.parse(event.target!.result as string);
+				setNodes(nodes);
+				setEdges(edges);
+			};
+			fileReader.readAsText(file);
+		}
+	}
 
 	return (
 		<ReactFlow
@@ -66,8 +91,9 @@ export default function Flow() {
 			onConnect={onConnect}
 			colorMode={theme}
 			edgeTypes={edgeTypes}
-			onDrop={(e) => onDrop(e)}
-			onDragOver={(e) => onDragOver(e)}
+			onDragOver={(e) => handleDragOver(e)}
+			onDragLeave={(e) => handleDragLeave(e)}
+			onDrop={(e) => handleDrop(e)}
 			nodeTypes={nodeTypes}>
 			<Background />
 			<Controls />
