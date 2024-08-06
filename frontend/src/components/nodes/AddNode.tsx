@@ -12,8 +12,8 @@ const addOperation: NodeOperation = async (inputs) => {
 			type: 'number',
 			label: '结果',
 			data: sum,
-			showHandle: false,
-			showData: true,
+			showHandle: true,
+			showData: false,
 		},
 	];
 };
