@@ -136,7 +136,18 @@ export default function BottomPanel() {
 	const handleAdd = useCallback(() => {}, []);
 
 	const handleSave = useCallback(() => {
-		console.log(store.getState());
+		const nodes = store.getState().nodes;
+		const edges = store.getState().edges;
+		const data = JSON.stringify({
+			nodes,
+			edges,
+		});
+		const blob = new Blob([data], { type: 'application/json' });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = 'flow.json';
+		link.click();
 	}, [store]);
 
 	return (

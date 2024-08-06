@@ -4,7 +4,6 @@ import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { ThemeProvider } from './components/ThemeProvider';
 import { ModeToggle } from './components/ModeToggle';
-import RightInputs from './components/RightInputs';
 
 function App() {
 	return (

@@ -7,7 +7,15 @@ import NodeWrapper from './NodeWrapper';
 
 const addOperation: NodeOperation = async (inputs) => {
 	const sum = inputs.reduce((acc, item) => acc + Number(item.data), 0);
-	return [{ type: 'number', label: 'output1', data: sum }];
+	return [
+		{
+			type: 'number',
+			label: '结果',
+			data: sum,
+			showHandle: false,
+			showData: true,
+		},
+	];
 };
 
 export default function AddNode(props: NodeProps) {
@@ -41,7 +49,7 @@ export default function AddNode(props: NodeProps) {
 				outputs: [
 					{
 						type: 'number',
-						label: 'output1',
+						label: '结果',
 						data: null,
 						showHandle: true,
 						showData: false,
