@@ -1,7 +1,6 @@
 import ClearIcon from '@/components/icons/clearIcon';
 import SaveIcon from '@/components/icons/saveIcon';
 import StartIcon from '@/components/icons/startIcon';
-// import AddIcon from '@/assets/addIcon';
 import { useCallback } from 'react';
 import { useReactFlow, Panel, useStoreApi } from '@xyflow/react';
 import useWorkflowStore from '@/store/workflow';
@@ -133,8 +132,6 @@ export default function BottomPanel() {
 		setEdges([]);
 	};
 
-	// const handleAdd = useCallback(() => {}, []);
-
 	const handleSave = useCallback(() => {
 		const nodes = store.getState().nodes;
 		const edges = store.getState().edges;
@@ -159,11 +156,6 @@ export default function BottomPanel() {
 				onClick={handleStart}>
 				<StartIcon />
 			</div>
-			{/* <div
-				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
-				onClick={handleAdd}>
-				<AddIcon />
-			</div> */}
 			<div
 				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
 				onClick={handleClear}>

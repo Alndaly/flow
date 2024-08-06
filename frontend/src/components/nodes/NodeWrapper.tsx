@@ -12,9 +12,10 @@ const NodeWrapper = ({
 	name: string;
 }) => {
 	const id = useNodeId()!;
-	const { getNodeById } = useWorkflowStore();
+	const { getNodeById, setSettingNodeId } = useWorkflowStore();
 	const handleClickSettingsButton = () => {
-		console.log(111);
+		// 展示对应节点的设置面板
+		setSettingNodeId(id);
 	};
 	return (
 		<div

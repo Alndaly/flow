@@ -4,8 +4,11 @@ import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { ThemeProvider } from './components/ThemeProvider';
 import { ModeToggle } from './components/ModeToggle';
+import NodeSettings from './components/NodeSettings';
+import useWorkflowStore from './store/workflow';
 
 function App() {
+	const { settingNodeID } = useWorkflowStore();
 	return (
 		<ThemeProvider>
 			<ReactFlowProvider>
@@ -24,10 +27,14 @@ function App() {
 							<ModeToggle />
 						</div>
 					</div>
-					<div
-						className='shadow overflow-hidden flex-1 h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
+					<div className='shadow overflow-hidden flex-1 h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
 						<Workflow />
 					</div>
+					{settingNodeID && (
+						<div className='min-w-[300px] shadow overflow-hidden h-full rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-lg'>
+							<NodeSettings />
+						</div>
+					)}
 				</div>
 			</ReactFlowProvider>
 		</ThemeProvider>

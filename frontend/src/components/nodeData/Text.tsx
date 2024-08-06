@@ -18,8 +18,9 @@ type TextDataProps = {
 export default function TextData(props: TextDataProps) {
 	const { label, io, id, value, showHandle, showData, required, disabled } =
 		props;
-	const nodeId = useNodeId();
-	const { setNode, getNodeById } = useWorkflowStore();
+	const { setNode, getNodeById, settingNodeID } = useWorkflowStore();
+	let nodeId = useNodeId();
+	if (!nodeId) nodeId = settingNodeID;
 	const handleTextDataChange = useCallback(
 		(io: string, id: string, value: any) => {
 			if (!nodeId) return;
