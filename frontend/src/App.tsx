@@ -6,6 +6,7 @@ import { ThemeProvider } from './components/ThemeProvider';
 import { ModeToggle } from './components/ModeToggle';
 import NodeSettings from './components/NodeSettings';
 import useWorkflowStore from './store/workflow';
+import { GithubIcon } from './components/icons/githubIcon';
 
 function App() {
 	const { settingNodeID } = useWorkflowStore();
@@ -24,6 +25,7 @@ function App() {
 									Kinda Hall
 								</a>
 							</div>
+							<GithubIcon />
 							<ModeToggle />
 						</div>
 					</div>
