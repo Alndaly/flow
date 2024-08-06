@@ -55,7 +55,7 @@ export default function BottomPanel() {
 				);
 				const outputs = await excuteNode(fromNode.id);
 				// 获取输出项
-				const output = outputs.find(
+				const output = outputs!.find(
 					(output) => output.label === edge.sourceHandle
 				);
 				console.debug(
