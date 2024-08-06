@@ -31,7 +31,7 @@ export default function NodeSearch() {
 		event.dataTransfer.effectAllowed = 'move';
 	};
 	return (
-		<div className='flex-1 p-5'>
+		<div className='flex flex-col flex-1 p-5 h-full'>
 			<h1 className='text-xl font-bold mb-3'>Node Search</h1>
 			<Input
 				type='text'
@@ -47,7 +47,7 @@ export default function NodeSearch() {
 				)}
 			/>
 			<hr className='my-5' />
-			<div className='flex-1'>
+			<div className='flex-1 overflow-auto box-border'>
 				{nodesAvailable
 					.filter((node) =>
 						node.type.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())

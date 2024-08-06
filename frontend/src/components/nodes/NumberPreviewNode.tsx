@@ -37,7 +37,7 @@ export default function NumberPreviewNode(props: NodeProps) {
 							data: null,
 							required: true,
 							showData: true,
-							showHandle: false,
+							showHandle: true,
 						},
 					],
 				},
@@ -65,8 +65,8 @@ export default function NumberPreviewNode(props: NodeProps) {
 								<TextData
 									io='input'
 									disabled={true}
-									showHandle={true}
-									showData={true}
+									showHandle={input.showHandle}
+									showData={input.showData}
 									id={input.label}
 									label={input.label}
 									value={input.data}

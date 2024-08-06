@@ -74,13 +74,11 @@ export default function TextData(props: TextDataProps) {
 			)}
 			<Field>
 				{io === 'input' ? (
-					<Label className='max-w-[20em] text-sm/6 font-medium'>
-						<div className='flex flex-row justify-between pb-1'>
-							<div>{label}</div>
-							{required && (
-								<div className='rounded-full px-2 border text-sm'>必填</div>
-							)}
-						</div>
+					<Label className='max-w-[20em] text-sm/6 font-medium flex flex-row justify-between items-center'>
+						<div>{label}</div>
+						{required && (
+							<div className='rounded-full px-2 border text-sm'>必填</div>
+						)}
 					</Label>
 				) : (
 					<Label className='max-w-[20em] text-right text-sm/6 font-medium line-clamp-1'>
