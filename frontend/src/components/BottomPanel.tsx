@@ -92,10 +92,10 @@ export default function BottomPanel() {
 				status: 'running',
 			});
 			let outputs = null;
+			await utils.sleep(2000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
 			if (getNodeById(id)!.status === 'done') {
 				outputs = getNodeById(id)!.data.outputs;
 			} else {
-				await utils.sleep(1000); // 如果你想要更缓慢的查看整个flow的运行过程，就取消注释这一行
 				outputs = await getNodeById(id)!.operation!(
 					getNodeById(id)!.data.inputs!
 				);

@@ -12,7 +12,6 @@ const NodeWrapper = ({
 }) => {
 	const id = useNodeId()!;
 	const { getNodeById } = useWorkflowStore();
-	console.log(id, getNodeById(id)?.status)
 	return (
 		<div
 			className={`

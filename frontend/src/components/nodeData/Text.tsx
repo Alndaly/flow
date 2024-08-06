@@ -12,10 +12,12 @@ type TextDataProps = {
 	showHandle: boolean;
 	showData: boolean;
 	required?: boolean;
+	disabled?: boolean;
 };
 
 export default function TextData(props: TextDataProps) {
-	const { label, io, id, value, showHandle, showData, required } = props;
+	const { label, io, id, value, showHandle, showData, required, disabled } =
+		props;
 	const nodeId = useNodeId();
 	const { setNode, getNodeById } = useWorkflowStore();
 	const handleTextDataChange = useCallback(
@@ -74,7 +76,9 @@ export default function TextData(props: TextDataProps) {
 					<Label className='max-w-[20em] text-sm/6 font-medium'>
 						<div className='flex flex-row justify-between pb-1'>
 							<div>{label}</div>
-							{required && <div className='rounded-full px-2 border text-sm'>必填</div>}
+							{required && (
+								<div className='rounded-full px-2 border text-sm'>必填</div>
+							)}
 						</div>
 					</Label>
 				) : (
@@ -85,6 +89,7 @@ export default function TextData(props: TextDataProps) {
 				{showData && (
 					<Input
 						type='text'
+						disabled={disabled}
 						value={value ? value : ''}
 						onChange={(event) =>
 							handleTextDataChange(io, id, event.target.value)

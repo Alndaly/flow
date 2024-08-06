@@ -63,7 +63,7 @@ export class Node {
   data: {
     inputs?: InputDataItem[];  // 输入项的标签列表
     outputs?: OutputDataItem[]; // 输出项的标签列表
-  } = { inputs: [] }
+  } = {}
   operation?: NodeOperation;
 
   constructor(type: string, position: XYPosition) {
