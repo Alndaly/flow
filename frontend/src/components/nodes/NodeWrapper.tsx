@@ -1,5 +1,6 @@
 import useWorkflowStore from '@/store/workflow';
 import { NodeToolbar, Position, useNodeId } from '@xyflow/react';
+import SettingsIcon from '../icons/settings';
 import LoadingIcon from '../icons/loading';
 const NodeWrapper = ({
 	children,
@@ -12,18 +13,33 @@ const NodeWrapper = ({
 }) => {
 	const id = useNodeId()!;
 	const { getNodeById } = useWorkflowStore();
+	const handleClickSettingsButton = () => {
+		console.log(111);
+	};
 	return (
 		<div
 			className={`
 				p-[1px]
 				${selected ? 'outline outline-1 outline-blue-500' : ''}
-				${getNodeById(id)?.status === 'error' ? 'outline outline-1 outline-red-800' : ''}
-				${getNodeById(id)?.status === 'running' ? 'outline outline-1 rotating-outline' : ''}
+				${
+					getNodeById(id)?.status === 'error'
+						? 'outline outline-1 outline-red-800'
+						: ''
+				}
+				${
+					getNodeById(id)?.status === 'running'
+						? 'outline outline-1 rotating-outline'
+						: ''
+				}
 				overflow-hidden rounded-md shadow hover:shadow-lg backdrop-blur-lg transition-all`}>
 			<div className='bg-white dark:bg-gray-500 p-3 rounded-md'>
 				<NodeToolbar isVisible={selected} position={Position.Top}>
-					<div className='rounded-full border border-1 px-2'>
-						<button>编辑</button>
+					<div className='mt-5 flex flex-row gap-4 rounded-full backdrop-blur-sm bg-black/20 dark:bg-black/20 p-2'>
+						<button
+							className='cursor-pointer'
+							onClick={handleClickSettingsButton}>
+							<SettingsIcon />
+						</button>
 					</div>
 				</NodeToolbar>
 				<div className='pb-2'>

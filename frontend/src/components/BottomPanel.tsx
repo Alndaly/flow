@@ -1,6 +1,6 @@
-import ClearIcon from '@/assets/clearIcon';
-import SaveIcon from '@/assets/saveIcon';
-import StartIcon from '@/assets/startIcon';
+import ClearIcon from '@/components/icons/clearIcon';
+import SaveIcon from '@/components/icons/saveIcon';
+import StartIcon from '@/components/icons/startIcon';
 // import AddIcon from '@/assets/addIcon';
 import { useCallback } from 'react';
 import { useReactFlow, Panel, useStoreApi } from '@xyflow/react';
@@ -152,8 +152,8 @@ export default function BottomPanel() {
 
 	return (
 		<Panel
-			position='bottom-center'
-			className='p-3 bg-white/20 dark:bg-black/20 flex items-center gap-5 rounded-lg shadow'>
+			position='bottom-right'
+			className='p-2 bg-white dark:bg-black flex items-center gap-2 rounded-lg shadow'>
 			<div
 				className='cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 p-2 rounded-lg transition-all duration-300'
 				onClick={handleStart}>
