@@ -2,6 +2,7 @@ import ClearIcon from '@/components/icons/clearIcon';
 import SaveIcon from '@/components/icons/saveIcon';
 import StartIcon from '@/components/icons/startIcon';
 import { useCallback } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useReactFlow, Panel, useStoreApi } from '@xyflow/react';
 import useWorkflowStore from '@/store/workflow';
 import { utils } from '@kinda/utils';
@@ -143,7 +144,7 @@ export default function BottomPanel() {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement('a');
 		link.href = url;
-		link.download = 'flow.json';
+		link.download = `workflow-${uuidv4()}.json`;
 		link.click();
 	}, [store]);
 
